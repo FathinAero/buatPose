@@ -1,0 +1,68 @@
+/* ====== MOBILE-ONLY OVERRIDES (<= 768px) ====== */
+@media (max-width: 768px) {
+  /* 1) Scroll horizontal keliatan mulus + ga ada scrollbar
+     (berlaku buat semua elemen yang sudah punya class Tailwind overflow-x-auto) */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  .overflow-x-auto::-webkit-scrollbar { display: none; }
+  .overflow-x-auto { scrollbar-width: none; }
+
+  /* 2) Process cards: lebar dikit lebih ramping biar muat layar kecil
+     (tanpa ubah struktur) */
+  [data-card] {
+    width: 250px;   /* desktop-mu tetap pakai w-[280-320px], ini cuma di mobile */
+  }
+
+  /* 3) Tipografi heading biar gak “teriak” di HP tapi tetap layout sama */
+  section h2 {
+    font-size: clamp(20px, 6vw, 28px);
+    line-height: 1.25;
+  }
+  section h3 {
+    font-size: clamp(16px, 4.8vw, 20px);
+    line-height: 1.25;
+  }
+
+  /* 4) Paragraph lebih gampang dibaca di HP */
+  section p {
+    font-size: 14px;
+    line-height: 22px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* 5) Container padding kanan-kiri dibikin aman di HP (tanpa nyentuh layout desktop) */
+  [class*="max-w-[1200px]"] {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* 6) Shape gambar di SolutionRow: jaga proporsi & jangan kepotong
+     (kamu sudah posisikan img absolute; ini cuma safety) */
+  /* target: img absolute yang berada di dalam shape ber-background gradient */
+  .relative > img.absolute {
+    max-height: 100%;
+    max-width: none;
+  }
+
+  /* 7) Grid smart features & struggles: jarak antar kartu lebih rapat sedikit di HP */
+  .grid {
+    row-gap: 12px;
+    column-gap: 12px;
+  }
+
+  /* 8) Footer spacing di HP (tetap sama strukturnya) */
+  footer > div {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  footer p { font-size: 12px; }
+}
+
+/* ====== VERY SMALL PHONES (<= 360px) optional, aman di layout yang ada ====== */
+@media (max-width: 360px) {
+  [data-card] { width: 230px; }
+  section h2 { font-size: clamp(18px, 6.4vw, 24px); }
+}

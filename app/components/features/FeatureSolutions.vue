@@ -1,0 +1,248 @@
+<script setup lang="ts">
+import SolutionRow from '~/components/features/SolutionRow.vue'
+import { ref } from 'vue'
+
+type Step = { title: string; desc: string; img: string }
+const steps = ref<Step[]>([
+  { title: 'Step 1', desc: 'Just tap anywhere in the Welcome screen to start.',           img: '/img/welcome.svg' },
+  { title: 'Step 2', desc: 'There will be the instructions for using the photo booth.',       img: '/img/how-to.svg' },
+  { title: 'Step 3', desc: 'Customers will scan the QR code to make payment.',                    img: '/img/payment.svg' },
+  { title: 'Step 4', desc: 'Validate payments quickly once payment is complete.',                         img: '/img/payment-success.svg' },
+  { title: 'Step 5', desc: 'Customers can choose which frame to use.',                img: '/img/choose-frame.svg' },
+  { title: 'Step 6', desc: 'After that take a photo and do a retake if necessary.',             img: '/img/retake.svg' },
+  { title: 'Step 7', desc: 'Customers can also add filters to their photos.',                  img: '/img/choose-filter.svg' },
+  { title: 'Step 8', desc: 'Print will be processed. Customer can also reprint or send digital images via WhatAapp..',                        img: '/img/print-again.svg' },
+])
+
+const items = [
+  {
+    img: '/img/remote-friendly.svg',
+    tag: 'Remote Friendly Monitoring',
+    title: 'Manage everything from one dashboard',
+    desc: 'Get instant business insights with our centralized monitoring anytime and from everywhere. With this feature you can track real-time revenue across all branches, analyze top-performing frames, and monitor customer traffic patterns through intuitive visual dashboards.',
+    bg: 'linear-gradient(180deg, rgba(255,102,196,0.35), rgba(255,102,196,0.15))',
+    tagBg: '#FF45B3',
+  },
+  {
+    img: '/img/customer-management.svg',
+    tag: 'Customer Management',
+    title: 'Manage customers easier and more structured',
+    desc: 'Our database automatically records every transactions that can be fully filtered by date range for easy financial reconciliation and targeted marketing campaigns. The system keeps a complete history, so you can analyze customer preferences and optimize data-driven business strategies.',
+    bg: 'linear-gradient(180deg, rgba(61,123,255,0.28), rgba(61,123,255,0.14))',
+    tagBg: '#3D4CDF'
+  },
+  {
+    img: '/img/brand-freedom.svg',
+    tag: 'Brand Freedom',
+    title: 'Brand your booth your way with custom front end',
+    desc: 'Customize all element at the screens to match your brand identity. Our intuitive admin dashboard puts you in complete control to customize your photobooth screen. This features ensuring a cohesive and professional look across all customer touch points without requiring any technical skills.',
+    bg: 'linear-gradient(180deg, rgba(63,223,173,0.30), rgba(63,223,173,0.12))',
+    tagBg: '#42BD9C'
+  },
+  {
+    img: '/img/price-management.svg',
+    tag: 'Price Management',
+    title: 'Effortless pricing control for all booths & reprints',
+    desc: 'You can easily set the global price of your photos from your dashboard, as well as the reprint price if your customers might want to print the photos again.',
+    bg: 'linear-gradient(180deg, rgba(255,215,67,0.35), rgba(255,215,67,0.14))',
+    tagBg: '#FFC132'
+  },
+  {
+    img: '/img/scale-up.svg',
+    tag: 'Easy to Scale Up',
+    title: 'Add new organizations and branches in seconds',
+    desc: 'You only need one software to organize all your branches and booths. Create new organizations (for franchise partners or business units) and add unlimited branches under each. Stay in control no matter how many locations you grow. ',
+    bg: 'linear-gradient(180deg, rgba(255,102,196,0.30), rgba(255,102,196,0.12))',
+    tagBg: '#FF45B3'
+  },
+  {
+    img: '/img/custom-frame.svg',
+    tag: 'Custom Frame',
+    title: 'Flexible frame design to fit event needs',
+    desc: 'Choose from ready-to-use frame layouts or upload your own designs. Organize them by category for faster setup and full creative control.',
+    bg: 'linear-gradient(180deg, rgba(61,123,255,0.28), rgba(61,123,255,0.12))',
+    tagBg: '#3D4CDF',
+  },
+] as const
+
+
+const scroller = ref<HTMLDivElement | null>(null)
+const scrollByCards = (dir: 1 | -1) => {
+  const el = scroller.value
+  if (!el) return
+  const card = el.querySelector<HTMLElement>('[data-card]')
+  const w = card ? card.offsetWidth + 16 : 320
+  el.scrollBy({ left: dir * w * 1.25, behavior: 'smooth' })
+}
+</script>
+
+<template>
+  <section id="features-solutions" class="relative bg-[#F5F7FD]">
+    <div
+      class="pointer-events-none absolute inset-0 z-0"
+      style="
+        background:
+          radial-gradient(1100px 600px at 106% 18%,
+            rgba(255,173,223,.24) 0%,
+            rgba(255,229,168,.16) 34%,
+            rgba(255,229,168,0) 58%
+          ),
+
+          radial-gradient(1100px 600px at 104% 48%,
+            rgba(255,229,168,.24) 0%,
+            rgba(255,173,223,.18) 34%,
+            rgba(255,173,223,0) 58%
+          ),
+
+          radial-gradient(1100px 620px at -8% 68%,
+            rgba(255,229,168,.22) 0%,
+            rgba(255,173,223,.16) 32%,
+            rgba(255,173,223,0) 56%
+          ),
+
+          radial-gradient(1100px 640px at 106% 85%,
+            rgba(179,195,255,.22) 0%,
+            rgba(76,224,179,.16) 34%,
+            rgba(76,224,179,0) 58%
+          );
+      "
+    />
+    <div class="mx-auto w-full max-w-[1200px] px-[24px] md:px-[40px] lg:px-[64px] mb-[100px]">
+      <div class="pt-[32px] pb-[12px] flex items-center justify-center">
+        <div class="inline-flex h-[28px] items-center justify-center rounded-[999px] px-[10px] text-[12px] font-semibold text-[#3D7BFF] ring-1 ring-[#CFE0FF] bg-white leading-[0]">
+          Features
+        </div>
+      </div>
+
+      <h2 class="text-center text-[26px] leading-[34px] md:text-[36px] md:leading-[44px] font-semibold text-[#0F172A]">
+        This is Our Solution For <br class="hidden md:block" /> Your Concern!
+      </h2>
+
+      <div class="mt-[28px] md:mt-[40px] space-y-[40px] md:space-y-[56px]">
+        <SolutionRow
+          v-for="(it, idx) in items"
+          :key="idx"
+          v-bind="it"
+          direction="left"
+          :shape-height="320"
+          :shape-trim-right="40"
+          :img-offset-top="16"
+          :text-max-width="1200"
+          :text-pull-left="100"
+        />
+      </div>
+    </div>
+    
+    <div class="mx-auto w-full max-w-[1200px] px-[24px] md:px-[40px] lg:px-[64px] mb-[100px]">
+      <div class="pt-[8px] pb-[30px] flex items-center justify-center">
+        <div class="inline-flex h-[28px] items-center justify-center rounded-[999px] px-[10px] text-[12px] font-semibold text-[#FF66C4] ring-1 ring-[#FF66C4]">
+          Process
+        </div>
+      </div>
+
+      <h2 class="text-center text-[24px] leading-[32px] md:text-[32px] md:leading-[40px] font-semibold text-[#0F172A]">
+          <span class="inline-flex align-baseline">
+            <span class="text-[#3D4CDF]">P</span>
+            <span class="-ml-[2px] text-[#FD78CB]">o</span>
+            <span class="-ml-[2px] text-[#3D4CDF]">s</span>
+            <span class="-ml-[2px] text-[#3D4CDF]">e</span>
+          </span>
+        Photo Booth Usage Process Flow
+      </h2>
+      <p class="mt-[8px] text-center text-[14px] md:text-[15px]">
+        An intuitive scree, fun experience from first tap to printed photo, designed to delight your costumers!.
+      </p>
+
+      <div class="relative mt-[24px] md:mt-[10px]">
+        <div class="flex items-center justify-end gap-2 mb-2">
+          <button class="hidden md:inline-flex h-[36px] px-3 rounded-lg ring-1 ring-gray-200 hover:bg-gray-50" @click="scrollByCards(-1)">‹</button>
+          <button class="hidden md:inline-flex h-[36px] px-3 rounded-lg ring-1 ring-gray-200 hover:bg-gray-50" @click="scrollByCards(1)">›</button>
+        </div>
+
+          <div
+            ref="scroller"
+            class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2"
+          >
+            <div
+              v-for="(s, i) in steps"
+              :key="i"
+              data-card
+              class="snap-start shrink-0 w-[280px] sm:w-[300px] md:w-[320px] rounded-2xl border border-[#E7EDFF] bg-[#E1E7FF]"
+            >
+              <div class="px-4 pt-4 pb-3">
+                <div class="flex items-center gap-2 text-[12px] font-semibold text-[#3D4CDF]">
+                  <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FF66C4] text-white">{{ i + 1 }}</span>
+                  {{ s.title }}
+                </div>
+                <p class="mt-2 text-[13px] leading-[20px]">
+                  {{ s.desc }}
+                </p>
+              </div>
+
+              <div class="mx-4 mb-4 h-[150px] sm:h-[160px] md:h-[170px] rounded-xl ring-1 ring-[#EEF1F6] overflow-hidden bg-[#F5F7FB]">
+                <img
+                  :src="s.img"
+                  :alt="s.title"
+                  class="h-full w-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style>
+/* ====== Mobile-only tweaks untuk section ini saja ====== */
+@media (max-width: 768px) {
+  /* container padding lebih rapih di HP */
+  #features-solutions .max-w-\[1200px\] {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Heading & copy ngecil dikit biar gak nabrak tanpa ubah layout grid */
+  #features-solutions h2 {
+    font-size: clamp(22px, 6.2vw, 32px);
+    line-height: 1.25;
+  }
+  #features-solutions p {
+    font-size: 14px;
+    line-height: 22px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* Process scroller: momentum scroll + sembunyiin scrollbar */
+  #features-solutions .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: none;   /* Firefox */
+  }
+  #features-solutions .overflow-x-auto::-webkit-scrollbar { display: none; }
+
+  /* Lebar kartu Process dibikin sedikit lebih ramping di HP
+     (tanpa ngubah definisi w-[280/300/320px] kamu di desktop) */
+  #features-solutions [data-card] {
+    width: 250px;
+  }
+
+  /* Jarak antar section di HP sedikit dirapatkan */
+  #features-solutions .space-y-\[40px\] > * + * { margin-top: 28px; }
+  #features-solutions .md\:space-y-\[56px\] > * + * { margin-top: 28px; }
+
+  /* Card gambar (frame abu) biar ga kependekan di HP */
+  #features-solutions .ring-\[\#EEF1F6\].rounded-xl {
+    min-height: 140px;
+  }
+}
+
+/* ====== Very small phones (opsional) ====== */
+@media (max-width: 360px) {
+  #features-solutions [data-card] { width: 230px; }
+  #features-solutions h2 { font-size: clamp(20px, 6.6vw, 28px); }
+}
+</style>
