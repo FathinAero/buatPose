@@ -22,7 +22,6 @@ const year = new Date().getFullYear()
 <template>
   <!-- WRAPPER gabungan: SmartFeatures + Footer -->
   <section class="relative bg-[#F5F7FD]">
-    <!-- 1 gradient kanan untuk seluruh section (termasuk footer) -->
     <div
       class="pointer-events-none absolute inset-0 z-0"
       style="

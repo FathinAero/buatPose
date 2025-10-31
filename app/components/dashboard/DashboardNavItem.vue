@@ -7,7 +7,6 @@
     <div class="flex items-center gap-[8px] h-[40px] px-[12px] text-[14px] text-[#1F2937]">
       <!-- ICON AREA -->
       <span class="flex items-center justify-center w-[20px] h-[20px]">
-        <!-- 1. kalau kita punya iconName (svg custom), pakai itu -->
         <img
           v-if="iconSrc"
           :src="iconSrc"
@@ -15,7 +14,6 @@
           class="w-[20px] h-[20px] object-contain"
         />
 
-        <!-- 2. fallback ke emoji kalau belum ada svg -->
         <span
           v-else
           class="text-[16px] leading-none"
@@ -41,8 +39,7 @@ const props = defineProps<{
   active?: boolean
 }>()
 
-// Hitung path icon svg berdasarkan iconName
-// Asumsi: file svg kamu ada di /public/img/
+
 const iconSrc = computed(() => {
   if (!props.iconName) return null
   return `/img/${props.iconName}.svg`

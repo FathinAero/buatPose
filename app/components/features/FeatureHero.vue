@@ -7,7 +7,6 @@
   class="pointer-events-none absolute inset-0 z-10"
   style="
     background:
-      /* kiri: pink lebih dominan, peach cuma hint */
       radial-gradient(
         1500px 1000px at -4% 18%,
         rgba(255,173,223,0.4) 0%,
@@ -15,7 +14,7 @@
         rgba(255,229,168,0.10) 38%,
         rgba(255,229,168,0.0) 58%
       ),
-      /* kanan tetap */
+
       radial-gradient(
         1500px 1000px at 106% 60%,
         rgba(139,162,253,0.22) 0%,

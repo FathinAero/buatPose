@@ -2,17 +2,9 @@
 @import "@nuxt/ui";
 
 @layer base {
-  html { @apply font-sans antialiased; }
-}
-
-@source "../../app/components/**/*";
-@source "../../app/layouts/**/*";
-@source "../../app/pages/**/*";
-@source "../../app/composables/**/*";
-@source "../../app/**/*.{vue,js,ts}";
-
-@theme {
-  --font-sans: "Inter", system-ui, sans-serif;
+	html {
+		@apply font-sans antialiased;
+	}
 }
 
 /*.bg-hero {
@@ -22,52 +14,52 @@
 }*/
 
 .grad-brand {
-  background: linear-gradient(90deg, #6A5AE0 0%, #E252F6 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+	background: linear-gradient(90deg, #6a5ae0 0%, #e252f6 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
 }
 
-.soft-shadow { box-shadow: 0 10px 25px rgba(80,60,180,.08), 0 2px 6px rgba(0,0,0,.04); }
+.soft-shadow {
+	box-shadow: 0 10px 25px rgba(80, 60, 180, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
 
 .section-kicker {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: #7C3AED;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 600;
+	letter-spacing: 0.4px;
+	text-transform: uppercase;
+	color: #7c3aed;
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+	scroll-behavior: smooth;
+	scroll-padding-top: 80px;
 }
 
 .bg-split-a {
-  background:
-    radial-gradient(40% 40% at 85% 10%, rgba(255,200,245,.38) 0%, rgba(255,200,245,0) 70%),
-    radial-gradient(48% 48% at 15% 60%, rgba(173,234,255,.40) 0%, rgba(173,234,255,0) 70%),
-    linear-gradient(180deg, #FBFBFF 0%, #F6F7FB 100%);
+	background: radial-gradient(40% 40% at 85% 10%, rgba(255, 200, 245, 0.38) 0%, rgba(255, 200, 245, 0) 70%), radial-gradient(48% 48% at 15% 60%, rgba(173, 234, 255, 0.4) 0%, rgba(173, 234, 255, 0) 70%),
+		linear-gradient(180deg, #fbfbff 0%, #f6f7fb 100%);
 }
 .bg-split-b {
-  background:
-    radial-gradient(42% 42% at 20% 18%, rgba(173,234,255,.45) 0%, rgba(173,234,255,0) 70%),
-    radial-gradient(45% 45% at 80% 65%, rgba(255,210,235,.38) 0%, rgba(255,210,235,0) 70%),
-    linear-gradient(180deg, #FBFBFF 0%, #F6F7FB 100%);
+	background: radial-gradient(42% 42% at 20% 18%, rgba(173, 234, 255, 0.45) 0%, rgba(173, 234, 255, 0) 70%), radial-gradient(45% 45% at 80% 65%, rgba(255, 210, 235, 0.38) 0%, rgba(255, 210, 235, 0) 70%),
+		linear-gradient(180deg, #fbfbff 0%, #f6f7fb 100%);
 }
 
 .drop-soft {
-  filter: drop-shadow(0 10px 24px rgba(0,0,0,.12)) drop-shadow(0 2px 6px rgba(0,0,0,.05));
+	filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.12)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.05));
 }
 
 .pill {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	padding: 10px 14px;
+	border-radius: 999px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 600;
 }
 
 /*.bg-home {
@@ -82,4 +74,7 @@ html {
   background-attachment: scroll; 
 }*/
 
-html, body { overflow-x: hidden; }
+html,
+body {
+	overflow-x: hidden;
+}

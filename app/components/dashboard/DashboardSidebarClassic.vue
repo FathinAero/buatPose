@@ -1,11 +1,4 @@
 <script setup lang="ts">
-/**
- * ❗ Legacy / Classic Sidebar
- * Ini versi sidebar awal (tanpa Nuxt UI).
- * Kita keep ini supaya gampang revert / refer styling lama.
- * Layout dashboard.vue TIDAK lagi pakai ini secara default.
- */
-
 import { useDashboardSidebar } from '~/composables/useDashboardSidebar'
 
 const { mode } = useDashboardSidebar()

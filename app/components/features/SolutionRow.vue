@@ -98,19 +98,16 @@ const shapeW = computed(() =>
 </template>
 
 <style scoped>
-/* kolom teks dikontrol lewat CSS var */
 .text-col {
   max-width: var(--tmax);
   position: relative;
-  left: var(--pull);   /* <<< pakai left, bukan margin-left */
+  left: var(--pull); 
 }
 
-/* MOBILE: nolkan pull supaya tidak nyeret layout ke kiri */
 @media (max-width: 767px) {
   .text-col { left: 0 !important; }
 }
 
-/* safety jika ada kata/URL super panjang */
 .solution-row { overflow-wrap: anywhere; }
 </style>
 

@@ -29,7 +29,7 @@
         <span class="font-medium leading-none truncate max-w-[140px] text-left">
           {{ currentOrgName }}
         </span>
-        <!-- NOTE: no arrow here on purpose -->
+
       </button>
 
       <!-- ORG DROPDOWN (only shows when !devicePage) -->
@@ -111,7 +111,6 @@ const devicePage = computed(() => !!deviceId.value)
 
 const { orgs } = useOrgList()
 
-// ambil device list dari composable, tapi cuma kalau kita punya orgId
 const { devices: deviceList } = useDeviceList(orgId.value || '')
 
 const currentOrgName = computed(() => {
