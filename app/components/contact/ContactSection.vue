@@ -25,6 +25,8 @@ const onSubmit = (e: Event) => {
   const fd = new FormData(e.target as HTMLFormElement)
   console.log(Object.fromEntries(fd.entries()))
 }
+
+const { p } = usePublicPath()
 </script>
 
 <template>
@@ -35,7 +37,7 @@ const onSubmit = (e: Event) => {
         :style="{ top: props.offsetTop + 'px', width: props.patternWidth + 'vw' }"
       >
         <img
-          src="/img/pattern-square.svg"
+          :src="p('/img/pattern-square.svg')"
           alt=""
           class="w-full h-full object-cover max-w-none"
           :style="{ opacity: props.patternOpacity }"
@@ -47,7 +49,7 @@ const onSubmit = (e: Event) => {
         :style="{ top: props.offsetTop + 'px', width: props.gradWidth + 'vw' }"
       >
         <img
-          src="/img/gradation-contact.svg"
+          :src="p('/img/gradation-contact.svg')"
           alt=""
           class="w-full h-full object-cover max-w-none"
         />
@@ -82,7 +84,7 @@ const onSubmit = (e: Event) => {
             <ul class="space-y-[14px] md:space-y-[16px]">
               <li class="flex items-start gap-[12px]">
                 <span class="grid place-items-center h-[36px] w-[36px] rounded-[10px]">
-                  <img src="/img/symbol-mail.svg" class="w-[40px] h-[40px]" alt="">
+                  <img :src="p('/img/symbol-mail.svg')" class="w-[40px] h-[40px]" alt="">
                 </span>
                 <div>
                   <p class="text-[13px] font-semibold opacity-70">Email</p>
@@ -92,7 +94,7 @@ const onSubmit = (e: Event) => {
 
               <li class="flex items-start gap-[12px]">
                 <span class="grid place-items-center h-[36px] w-[36px] rounded-[10px]">
-                  <img src="/img/symbol-location.svg" class="w-[40px] h-[40px]" alt="">
+                  <img :src="p('/img/symbol-location.svg')" class="w-[40px] h-[40px]" alt="">
                 </span>
                 <div>
                   <p class="text-[13px] font-semibold opacity-70">Location</p>
@@ -104,7 +106,7 @@ const onSubmit = (e: Event) => {
 
               <li class="flex items-start gap-[12px]">
                 <span class="grid place-items-center h-[36px] w-[36px] rounded-[10px]">
-                  <img src="/img/symbol-phone.svg" class="w-[40px] h-[40px]" alt="">
+                  <img :src="p('/img/symbol-phone.svg')" class="w-[40px] h-[40px]" alt="">
                 </span>
                 <div>
                   <p class="text-[13px] font-semibold opacity-70">Phone</p>

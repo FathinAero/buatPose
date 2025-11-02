@@ -1,22 +1,26 @@
 <script setup lang="ts">
-const heroImg = '/img/hero-mock.svg'
+const base = (useRuntimeConfig().app?.baseURL || '/').replace(/\/+$/, '')
+const { p } = usePublicPath()
+
+const heroImg = p('/img/hero-mock.svg')
 
 const services = [
-  { icon: '/img/symbol-camera.svg', title: 'Self Service Booth',          desc: 'Save on employee labor, let the PoSe system handle all your booth work systems.' },
-  { icon: '/img/symbol-kuas.svg',   title: 'Customizable Appearance',     desc: "You can have an exclusive customizable interface. Display your branding right from the booth's main screen." },
-  { icon: '/img/symbol-qr.svg',     title: 'Cashless Payment',            desc: 'QRIS, e-wallets, and cards supported with instant validation. No cashier needed, no missed transactions.' },
-  { icon: '/img/symbol-center.svg', title: 'Center Monitoring',           desc: 'Manage all booths and branches via dashboard. Monitor sales, frame usage, and device status from anywhere.' },
-  { icon: '/img/symbol-chat.svg',   title: 'Promising Marketing',         desc: 'From the customer number that has been recorded, you can increase customer engagement with Whatsapp Automation.' },
-  { icon: '/img/symbol-frame.svg',  title: 'Frames Management',           desc: 'Create, manage and monitor unique frame usage for each branch. Usage & revenue data for each frame can also be tracked.' }
+  { icon: p('/img/symbol-camera.svg'), title: 'Self Service Booth',          desc: 'Save on employee labor, let the PoSe system handle all your booth work systems.' },
+  { icon: p('/img/symbol-kuas.svg'),   title: 'Customizable Appearance',     desc: "You can have an exclusive customizable interface. Display your branding right from the booth's main screen." },
+  { icon: p('/img/symbol-qr.svg'),     title: 'Cashless Payment',            desc: 'QRIS, e-wallets, and cards supported with instant validation. No cashier needed, no missed transactions.' },
+  { icon: p('/img/symbol-center.svg'), title: 'Center Monitoring',           desc: 'Manage all booths and branches via dashboard. Monitor sales, frame usage, and device status from anywhere.' },
+  { icon: p('/img/symbol-chat.svg'),   title: 'Promising Marketing',         desc: 'From the customer number that has been recorded, you can increase customer engagement with Whatsapp Automation.' },
+  { icon: p('/img/symbol-frame.svg'),  title: 'Frames Management',           desc: 'Create, manage and monitor unique frame usage for each branch. Usage & revenue data for each frame can also be tracked.' }
 ]
 </script>
+
 
 <template>
   <!-- base warna -->
   <section class="relative bg-[#F5F7FD] overflow-hidden">
     <!-- LAYER GRADIENT (SVG) untuk area hero saja -->
     <img
-      src="/img/gradation-home-1.svg"
+      :src="p('/img/gradation-home-1.svg')"
       alt=""
       aria-hidden="true"
       class="pointer-events-none absolute inset-x-0 top-0 h-[1000px] w-full z-0 object-cover"

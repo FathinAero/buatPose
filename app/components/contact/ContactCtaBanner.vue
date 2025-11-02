@@ -12,6 +12,8 @@ withDefaults(defineProps<Props>(), {
   ctaLabel: 'Get Started',
   ctaHref: '#get-started',
 })
+
+const { p } = usePublicPath()
 </script>
 
 <template>
@@ -26,9 +28,9 @@ withDefaults(defineProps<Props>(), {
     />
 
     <!-- dekor -->
-    <img src="/img/pink-camera.svg"
+    <img :src="p('/img/pink-camera.svg')"
          class="hidden sm:block pointer-events-none absolute left-[18px] top-[22px] w-[56px] h-[56px]" alt="" />
-    <img src="/img/green-star-arrow.svg"
+    <img :src="p('/img/green-star-arrow.svg')"
          class="hidden sm:block pointer-events-none absolute right-[24px] top-[30px] w-[56px] h-[56px]" alt="" />
     <!-- swirl kecil (pakai inline svg kalau nggak ada aset) -->
     <svg class="pointer-events-none absolute left-[160px] bottom-[22px] w-[32px] h-[32px] opacity-90"

@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
-/**
- * state accordion terbuka mana
- * 0 = Spesifikasi Hardware
- * 1 = Printer Photobooth
- * 2 = Rekomendasi Kamera
- */
 const openIdx = ref<number | null>(0)
 
 function toggle(idx: number) {
   openIdx.value = openIdx.value === idx ? null : idx
+  
 }
+
+const { p } = usePublicPath()
 </script>
 
 <template>
@@ -134,7 +130,7 @@ function toggle(idx: number) {
 
               <!-- item PC -->
               <div class="flex items-start gap-[12px]">
-                <img src="/img/pc.svg" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
+                <img :src="p('/img/pc.svg')" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
                 <div>
                   <p class="text-[13px] font-semibold text-[#0F172A]">
                     HP Pavilion All–in–One PC
@@ -148,7 +144,7 @@ function toggle(idx: number) {
               </div>
 
               <div class="flex items-start gap-[12px]">
-                <img src="/img/pc.svg" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
+                <img :src="p('/img/pc.svg')" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
                 <div>
                   <p class="text-[13px] font-semibold text-[#0F172A]">
                     Dell Inspiron All–in–One PC
@@ -162,7 +158,7 @@ function toggle(idx: number) {
               </div>
 
               <div class="flex items-start gap-[12px]">
-                <img src="/img/pc.svg" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
+                <img :src="p('/img/pc.svg')" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
                 <div>
                   <p class="text-[13px] font-semibold text-[#0F172A]">
                     ASUS Zen AiO Pro All–in–One PC
@@ -176,7 +172,7 @@ function toggle(idx: number) {
               </div>
 
               <div class="flex items-start gap-[12px]">
-                <img src="/img/pc.svg" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
+                <img :src="p('/img/pc.svg')" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
                 <div>
                   <p class="text-[13px] font-semibold text-[#0F172A]">
                     Lenovo IdeaCentre All–in–One PC
@@ -190,7 +186,7 @@ function toggle(idx: number) {
               </div>
 
               <div class="flex items-start gap-[12px]">
-                <img src="/img/pc.svg" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
+                <img :src="p('/img/pc.svg')" class="w-[70px] h-auto flex-shrink-0 select-none" alt="">
                 <div>
                   <p class="text-[13px] font-semibold text-[#0F172A]">
                     Acer Aspire All–in–One PC

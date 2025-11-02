@@ -1,80 +1,110 @@
+
 @import "tailwindcss";
 @import "@nuxt/ui";
 
 @layer base {
-	html {
-		@apply font-sans antialiased;
-	}
+  html, body, #__nuxt {
+    @apply text-[#111827];
+  }
+
+  h1,h2,h3,h4,h5,h6 { @apply text-[#111827]; }
+  p { @apply text-[#1F2937]; }
 }
 
-/*.bg-hero {
-  background: radial-gradient(80% 60% at 80% 0%, rgba(180, 220, 255, 0.35) 0%, rgba(180, 220, 255, 0) 60%),
-              radial-gradient(60% 50% at 20% 10%, rgba(255, 180, 245, 0.35) 0%, rgba(255, 180, 245, 0) 60%),
-              linear-gradient(180deg, #f7f8ff 0%, #f7f6fc 100%);
-}*/
+
+/* === Theme tokens: pindahan dari tailwind.config.ts === */
+@theme {
+  /* Font families */
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-headline: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-inter: Inter, ui-sans-serif, system-ui, sans-serif;
+
+  /* Colors */
+  --color-primary-50:  #f5f3ff;
+  --color-primary-100: #ede9fe;
+  --color-primary-200: #ddd6fe;
+  --color-primary-300: #c4b5fd;
+  --color-primary-400: #a78bfa;
+  --color-primary-500: #8b5cf6;
+  --color-primary-600: #7C3AED;
+  --color-primary-700: #6d28d9;
+  --color-primary-800: #5b21b6;
+  --color-primary-900: #4c1d95;
+
+  --color-brandPink: #FF66C4;
+}
+
+/* Base: tanpa @layer (v4) */
+html { @apply font-sans antialiased; }
+
+/* ===================== */
+/* Utilitas & helpers    */
+/* ===================== */
 
 .grad-brand {
-	background: linear-gradient(90deg, #6a5ae0 0%, #e252f6 100%);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
+  background: linear-gradient(90deg, #6a5ae0 0%, #e252f6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .soft-shadow {
-	box-shadow: 0 10px 25px rgba(80, 60, 180, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 25px rgba(80, 60, 180, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .section-kicker {
-	font-size: 14px;
-	line-height: 20px;
-	font-weight: 600;
-	letter-spacing: 0.4px;
-	text-transform: uppercase;
-	color: #7c3aed;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #7c3aed; /* atau pakai text-primary-600 di markup */
 }
 
 html {
-	scroll-behavior: smooth;
-	scroll-padding-top: 80px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 .bg-split-a {
-	background: radial-gradient(40% 40% at 85% 10%, rgba(255, 200, 245, 0.38) 0%, rgba(255, 200, 245, 0) 70%), radial-gradient(48% 48% at 15% 60%, rgba(173, 234, 255, 0.4) 0%, rgba(173, 234, 255, 0) 70%),
-		linear-gradient(180deg, #fbfbff 0%, #f6f7fb 100%);
+  background:
+    radial-gradient(40% 40% at 85% 10%, rgba(255, 200, 245, 0.38) 0%, rgba(255, 200, 245, 0) 70%),
+    radial-gradient(48% 48% at 15% 60%, rgba(173, 234, 255, 0.4) 0%, rgba(173, 234, 255, 0) 70%),
+    linear-gradient(180deg, #fbfbff 0%, #f6f7fb 100%);
 }
+
 .bg-split-b {
-	background: radial-gradient(42% 42% at 20% 18%, rgba(173, 234, 255, 0.45) 0%, rgba(173, 234, 255, 0) 70%), radial-gradient(45% 45% at 80% 65%, rgba(255, 210, 235, 0.38) 0%, rgba(255, 210, 235, 0) 70%),
-		linear-gradient(180deg, #fbfbff 0%, #f6f7fb 100%);
+  background:
+    radial-gradient(42% 42% at 20% 18%, rgba(173, 234, 255, 0.45) 0%, rgba(173, 234, 255, 0) 70%),
+    radial-gradient(45% 45% at 80% 65%, rgba(255, 210, 235, 0.38) 0%, rgba(255, 210, 235, 0) 70%),
+    linear-gradient(180deg, #fbfbff 0%, #f6f7fb 100%);
 }
 
 .drop-soft {
-	filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.12)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.05));
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.12))
+          drop-shadow(0 2px 6px rgba(0, 0, 0, 0.05));
 }
 
 .pill {
-	display: inline-flex;
-	gap: 8px;
-	align-items: center;
-	padding: 10px 14px;
-	border-radius: 999px;
-	font-size: 14px;
-	line-height: 20px;
-	font-weight: 600;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
 }
 
-/*.bg-home {
+/* background image yang sebelumnya dikomentari: tetap, kalau mau pakai tinggal un-comment
+.bg-home {
   background-color: #F7F8FF;
-
   background-image: url('/img/bg-home.png');
-
   background-size: 100% auto;
-
   background-position: top center;
   background-repeat: repeat-y;
-  background-attachment: scroll; 
-}*/
-
-html,
-body {
-	overflow-x: hidden;
+  background-attachment: scroll;
 }
+*/
+
+html, body { overflow-x: hidden; }

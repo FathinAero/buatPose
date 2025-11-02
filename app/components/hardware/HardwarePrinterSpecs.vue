@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+const { p } = usePublicPath()
 </script>
 
 <template>
@@ -51,7 +51,7 @@
           <div class="grid grid-cols-2 gap-[16px] md:gap-[24px] text-center">
             <div class="flex flex-col items-center">
               <img
-                src="/img/hiti.svg"
+                :src="p('/img/hiti.svg')"
                 alt="Hiti P510"
                 class="block w-[120px] h-auto select-none"
                 loading="lazy"
@@ -64,7 +64,7 @@
 
             <div class="flex flex-col items-center">
               <img
-                src="/img/hiti.svg"
+                :src="p('/img/hiti.svg')"
                 alt="Hiti P525"
                 class="block w-[120px] h-auto select-none"
                 loading="lazy"
@@ -128,7 +128,7 @@
           <!-- Gambar DNP -->
           <div class="flex flex-col items-center">
             <img
-              src="/img/dnp.svg"
+              :src="p('/img/dnp.svg')"
               alt="DNP RX1HS"
               class="block w-[130px] h-auto select-none"
               loading="lazy"

@@ -1,34 +1,37 @@
 <script setup lang="ts">
-const blue = '#14239B' // warna strip biru
+const blue = '#14239B'
+
+// helper path aman ke /public (boleh ganti ke usePublicPath() kalau sudah ada)
+const base = (useRuntimeConfig().app?.baseURL || '/').replace(/\/+$/, '')
+const p = (path: string) => (path.startsWith('/') ? `${base}${path}` : `${base}/${path}`)
 </script>
 
 <template>
   <section class="w-full mt-[50px]" :style="{ background: blue }">
     <div class="relative max-w-[1200px] mx-auto px-[16px] md:px-[24px] py-[60px] md:py-[86px] text-center">
-
       <!-- Dekor (pakai assets dari /public/img) -->
       <div class="pointer-events-none select-none hidden md:block">
         <!-- kamera pink kiri-atas -->
         <img
-          src="/img/pink-camera.svg"
+          :src="p('/img/pink-camera.svg')"
           alt="camera"
-          class="absolute left-[0px] -top[0px] w-[64px] h-auto"
+          class="absolute left-[0px] -top-[0px] w-[64px] h-auto"
         />
         <!-- spiral kanan-atas -->
         <img
-          src="/img/spiral.svg"
+          :src="p('/img/spiral.svg')"
           alt="spiral"
           class="absolute right-[4px] -top-[6px] w-[44px] h-auto opacity-90"
         />
         <!-- spiral kecil kiri (aksen) -->
         <img
-          src="/img/spiral.svg"
+          :src="p('/img/spiral.svg')"
           alt="spiral"
           class="absolute left-[200px] top-[72px] w-[40px] h-auto opacity-80"
         />
         <!-- star-arrow hijau kanan-bawah -->
         <img
-          src="/img/green-star-arrow.svg"
+          :src="p('/img/green-star-arrow.svg')"
           alt="star arrow"
           class="absolute right-[24px] bottom-[10px] w-[56px] h-auto"
         />

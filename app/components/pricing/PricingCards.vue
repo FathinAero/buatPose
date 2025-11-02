@@ -18,6 +18,8 @@ const featuresRight = [
   'System update',
   'Training product'
 ]
+
+const { p } = usePublicPath()
 </script>
 
 <template>
@@ -26,7 +28,7 @@ const featuresRight = [
     <div class="pointer-events-none absolute inset-0 z-0">
       <div class="absolute top-0 left-1/2 -translate-x-1/2 h-[1600px] w-[140vw]">
         <img
-          src="/img/gradation-pricing.svg"
+          :src="p('/img/gradation-pricing.svg')"
           alt=""
           class="absolute left-1/2 -translate-x-1/2
                  h-full w-auto object-contain select-none"

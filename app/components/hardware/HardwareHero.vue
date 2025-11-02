@@ -13,6 +13,8 @@ const props = withDefaults(defineProps<Props>(), {
   patternOpacity: 0.6,
   gradWidth: 180,
 })
+
+const { p } = usePublicPath()
 </script>
 
 <template>
@@ -30,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
         }"
       >
         <img
-          src="/img/pattern-square.svg"
+          :src="p('/img/pattern-square.svg')"
           alt=""
           class="w-full h-full object-cover max-w-none"
           :style="{ opacity: props.patternOpacity.toString() }"
@@ -46,7 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
         }"
       >
         <img
-          src="/img/gradation-hardware.svg"
+          :src="p('/img/gradation-hardware.svg')"
           alt=""
           class="w-full h-full object-cover max-w-none"
         />
@@ -68,7 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
 
           <!-- dekor panah di kanan -->
           <img
-            src="/img/blue-pink-arrow.svg"
+            :src="p('/img/blue-pink-arrow.svg')"
             alt=""
             class="hidden md:block w-[200px] h-auto select-none pointer-events-none"
           />
@@ -95,6 +97,8 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style scoped>
+@reference '~/assets/css/main.css';
+
 .pill {
   @apply inline-flex items-center justify-center
          h-[28px] px-[10px]

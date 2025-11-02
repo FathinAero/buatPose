@@ -1,11 +1,13 @@
 <script setup lang="ts">
+const { p } = usePublicPath()
+
 const items = [
-  { img: '/img/concert.svg',        title: 'Concert',         main: '#3F51F7', back: '#2E3DB3' },
-  { img: '/img/birthday.svg',       title: 'Birthday Party',  main: '#20B486', back: '#148A66' },
-  { img: '/img/wedding.svg',        title: 'Wedding',         main: '#F5B53F', back: '#D0952F' },
-  { img: '/img/conference.svg',     title: 'Conference',      main: '#FF42A1', back: '#C51C7C' },
-  { img: '/img/private-event.svg',  title: 'Private Event',   main: '#FF5353', back: '#D43A3A' },
-  { img: '/img/graduation.svg',     title: 'Graduation',      main: '#9B47F3', back: '#6A2FD3' }
+  { img: p('/img/concert.svg'),       title: 'Concert',        main: '#3F51F7', back: '#2E3DB3' },
+  { img: p('/img/birthday.svg'),      title: 'Birthday Party', main: '#20B486', back: '#148A66' },
+  { img: p('/img/wedding.svg'),       title: 'Wedding',        main: '#F5B53F', back: '#D0952F' },
+  { img: p('/img/conference.svg'),    title: 'Conference',     main: '#FF42A1', back: '#C51C7C' },
+  { img: p('/img/private-event.svg'), title: 'Private Event',  main: '#FF5353', back: '#D43A3A' },
+  { img: p('/img/graduation.svg'),    title: 'Graduation',     main: '#9B47F3', back: '#6A2FD3' }
 ]
 </script>
 
@@ -24,7 +26,7 @@ const items = [
         </h2>
 
         <img
-          src="/img/blue-pink-arrow.svg"
+          :src="p('/img/blue-pink-arrow.svg')"
           alt=""
           class="self-end translate-y-[6px] md:translate-y-[10px]
                  h-[40px] sm:h-[44px] md:h-[56px] w-auto
@@ -33,10 +35,13 @@ const items = [
         />
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[16px] md:gap-[20px] lg:gap-[24px] mt-[12px] md:mt-[24px] justify-items-center">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[16px] md:gap-[20px] lg:gap-[24px]
+               mt-[12px] md:mt-[24px] justify-items-center"
+      >
         <OpportunityCard
-          v-for="(it, i) in items"
-          :key="i"
+          v-for="it in items"
+          :key="it.title"
           :img="it.img"
           :title="it.title"
           :main="it.main"

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 const open = ref(false)
+const { p } = usePublicPath()
 
 const links = [
   { label: 'Home',       to: '/' },
@@ -20,7 +21,7 @@ const closeMenu = () => (open.value = false)
       <div class="h-[64px] flex items-center justify-between">
         <!-- LOGO ke Home -->
         <NuxtLink to="/" class="flex items-center gap-[12px]" aria-label="Pose Home">
-          <img src="/img/logo-pose.svg" alt="PoSe" class="h-[36px] w-auto" />
+          <img :src="p('/img/logo-pose.svg')" alt="PoSe" class="h-[36px] w-auto" />
         </NuxtLink>
 
         <!-- menu desktop -->

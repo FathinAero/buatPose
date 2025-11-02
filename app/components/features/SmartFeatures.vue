@@ -17,6 +17,7 @@ const items: Feat[] = [
 ]
 
 const year = new Date().getFullYear()
+const { p } = usePublicPath()
 </script>
 
 <template>
@@ -83,7 +84,7 @@ const year = new Date().getFullYear()
       <footer class="pt-[32px] md:pt-[40px] pb-[max(28px,env(safe-area-inset-bottom))] mt-[50px]">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-[24px] md:gap-[40px]">
           <div class="md:col-span-2">
-            <img src="/img/logo-pose.svg" alt="Pose" class="w-[120px] h-auto" />
+            <img :src="p('/img/logo-pose.svg')" alt="Pose" class="w-[120px] h-auto" />
             <p class="mt-[14px] text-[14px] leading-[22px] text-[#1F2937] max-w-[580px]">
               POSE is the ultimate photobooth management system, helping
               businesses automate operations, boost revenue, and deliver

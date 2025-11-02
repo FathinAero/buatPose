@@ -21,7 +21,7 @@ defineProps<{
         <span v-else class="text-[28px] leading-none">{{ icon }}</span>
       </div>
 
-      <h4 class="mt-[14px] text-[20px] leading-[26px] font-semibold">
+      <h4 class="mt-[14px] text-[20px] leading-[26px] font-semibold text-white">
         {{ title }}
       </h4>
       <p class="mt-[8px] text-white/85 text-[15px] leading-[24px]">

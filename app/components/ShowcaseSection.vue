@@ -1,15 +1,17 @@
 <script setup lang="ts">
-const imgA = '/img/user-friendly.svg'
-const imgB = '/img/complete-control.svg'
+const { p } = usePublicPath()
+
+const imgA  = p('/img/user-friendly.svg')
+const imgB  = p('/img/complete-control.svg')
+const grad2 = p('/img/gradation-home-2.svg')
 </script>
 
 <template>
   <section id="showcases" class="relative space-y-[56px] overflow-hidden mt-[100px] mb-[100px]">
-    <!-- Layer gradient (tidak di-crop) -->
     <img
-      src="/img/gradation-home-2.svg"
+      :src="grad2"
       alt=""
-      class="pointer-events-none absolute inset-x-0 top-0 h-1000 w-full z-0 object-cover"
+      class="pointer-events-none absolute inset-x-0 bottom-[10px] h-full w-full z-0 object-cover"
     />
 
     <!-- ===== Blok 1 ===== -->

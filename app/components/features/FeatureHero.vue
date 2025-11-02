@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { p } = usePublicPath()
+
 </script>
 
 <template>
@@ -48,7 +50,7 @@
             >
               Get Started Today
               <img
-                src="/img/blue-pink-arrow.svg"
+                :src="p('/img/blue-pink-arrow.svg')"
                 alt=""
                 class="h-[16px] w-[16px]"
                 loading="eager"
@@ -62,7 +64,7 @@
         <div class="relative">
           <!-- laptop/dashboard utama -->
           <img
-            src="/img/complete-control.svg"
+            :src="p('/img/complete-control.svg')"
             alt="Tampilan PoSe dashboard"
             class="relative z-[2] mx-auto w-full max-w-[560px]"
             loading="eager"
@@ -71,14 +73,14 @@
 
           <!-- stiker kamera (atas kiri) -->
           <img
-            src="/img/pink-camera.svg"
+            :src="p('/img/pink-camera.svg')"
             alt=""
             class="absolute z-[3] left-[20px] top-[-6px] md:left-[10px] md:top-[-10px] w-[62px] md:w-[72px]"
           />
 
           <!-- stiker share (bawah kanan) -->
           <img
-            src="/img/green-star-arrow.svg"
+            :src="p('/img/green-star-arrow.svg')"
             alt=""
             class="absolute z-[3] right-[6px] bottom-[-6px] md:right-[-6px] md:bottom-[-10px] w-[66px] md:w-[74px]"
           />

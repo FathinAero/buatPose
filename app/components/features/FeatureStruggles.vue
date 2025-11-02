@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { p } = usePublicPath()
+</script>
 
 <template>
   <section class="relative isolate">
@@ -19,7 +21,7 @@
           <div class="rounded-[12px] border border-[#9DB9FF] bg-white px-[16px] py-[16px]">
             <div class="flex flex-col gap-[10px]">
               <div class="h-[32px] w-[32px] flex items-center justify-center">
-                <img src="/img/symbol-wrench.svg" alt="" class="h-[24px] w-[24px]" />
+                <img :src="p('/img/symbol-wrench.svg')" alt="" class="h-[24px] w-[24px]" />
               </div>
               <p class="text-[14px] leading-[20px] text-[#111827] font-semibold">
                 Difficult to monitor booths in many locations in real-time?
@@ -31,7 +33,7 @@
           <div class="rounded-[12px] border border-[#9DB9FF] bg-white px-[16px] py-[16px]">
             <div class="flex flex-col gap-[10px]">
               <div class="h-[32px] w-[32px] rounded-[8px] flex items-center justify-center">
-                <img src="/img/symbol-frame-2.svg" alt="" class="h-[24px] w-[24px]" />
+                <img :src="p('/img/symbol-frame-2.svg')" alt="" class="h-[24px] w-[24px]" />
               </div>
               <p class="text-[14px] leading-[20px] text-[#111827] font-semibold">
                 Frame & filter design for each event must be made manually one by one?
@@ -43,7 +45,7 @@
           <div class="rounded-[12px] border border-[#9DB9FF] bg-white px-[16px] py-[16px]">
             <div class="flex flex-col gap-[10px]">
               <div class="h-[32px] w-[32px] rounded-[8px] flex items-center justify-center">
-                <img src="/img/symbol-building.svg" alt="" class="h-[24px] w-[24px]" />
+                <img :src="p('/img/symbol-building.svg')" alt="" class="h-[24px] w-[24px]" />
               </div>
               <p class="text-[14px] leading-[20px] text-[#111827] font-semibold">
                 Adding new branch requires a lot of setup and extra cost?
@@ -55,7 +57,7 @@
           <div class="rounded-[12px] border border-[#9DB9FF] bg-white px-[16px] py-[16px]">
             <div class="flex flex-col gap-[10px]">
               <div class="h-[32px] w-[32px] rounded-[8px] flex items-center justify-center">
-                <img src="/img/symbol-chat-error.svg" alt="" class="h-[24px] w-[24px]" />
+                <img :src="p('/img/symbol-chat-error.svg')" alt="" class="h-[24px] w-[24px]" />
               </div>
               <p class="text-[14px] leading-[20px] text-[#111827] font-semibold">
                 No automated follow-ups so you missed opportunities to retain customers?
@@ -67,7 +69,7 @@
           <div class="rounded-[12px] border border-[#9DB9FF] bg-white px-[16px] py-[16px]">
             <div class="flex flex-col gap-[10px]">
               <div class="h-[32px] w-[32px] rounded-[8px] flex items-center justify-center">
-                <img src="/img/symbol-pie-chart.svg" alt="" class="h-[24px] w-[24px]" />
+                <img :src="p('/img/symbol-pie-chart.svg')" alt="" class="h-[24px] w-[24px]" />
               </div>
               <p class="text-[14px] leading-[20px] text-[#111827] font-semibold">
                 Decision rely on guesswork instead of real performance metrics?
