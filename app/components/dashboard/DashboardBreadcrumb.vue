@@ -1,153 +1,169 @@
-<template>
-  <div class="flex items-center flex-wrap gap-[4px] text-[13px] text-[#4B5563] mb-[8px]">
-    <!-- ORG SEGMENT -->
-    <div class="relative">
-      <!-- Case A: we're on ORG page (no deviceId) -->
-      <button
-        v-if="!devicePage"
-        class="flex items-center gap-[6px] hover:text-[#111827] transition-colors"
-        @click="toggleOrgMenu"
-      >
-        <span class="flex items-center justify-center w-[16px] h-[16px] rounded-[4px] border border-[#D1D5DB] bg-white text-[9px] text-[#4B5563]">
-          🏢
-        </span>
-        <span class="font-medium leading-none truncate max-w-[140px]">
-          {{ currentOrgName }}
-        </span>
-        <span class="text-[11px] leading-none text-[#6B7280]">▼</span>
-      </button>
+  <script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted, watch, watchEffect } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useOrgList, useDeviceList } from '~/composables/useOrgData'
 
-      <!-- Case B: we're on DEVICE page (has deviceId) -->
-      <button
-        v-else
-        class="flex items-center gap-[6px] hover:text-[#111827] transition-colors"
-        @click="goOrgDevices"
-      >
-        <span class="flex items-center justify-center w-[16px] h-[16px] rounded-[4px] border border-[#D1D5DB] bg-white text-[9px] text-[#4B5563]">
-          🏢
-        </span>
-        <span class="font-medium leading-none truncate max-w-[140px] text-left">
-          {{ currentOrgName }}
-        </span>
-
-      </button>
-
-      <!-- ORG DROPDOWN (only shows when !devicePage) -->
-      <div
-        v-if="showOrgMenu && !devicePage"
-        class="absolute z-20 mt-[4px] w-[220px] bg-white border border-[#E5E7EB] rounded-[6px] shadow-lg p-[4px]"
-      >
-        <div
-          v-for="org in orgs"
-          :key="org.id"
-          class="px-[8px] py-[8px] text-[13px] text-[#1F2937] hover:bg-[#F3F4F6] rounded-[4px] cursor-pointer flex items-start gap-[6px]"
-          @click="selectOrg(org)"
-        >
-          <div class="flex items-center justify-center w-[18px] h-[18px] rounded-[4px] border border-[#D1D5DB] bg-white text-[10px] text-[#4B5563]">
-            🏢
-          </div>
-          <div class="flex flex-col">
-            <span class="font-medium leading-none">
-              {{ org.name }}
-            </span>
-            <span class="text-[11px] text-[#6B7280] leading-none">
-              {{ org.id }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Slash ONLY if we're on a device page -->
-    <span v-if="devicePage" class="text-[#9CA3AF]">/</span>
-
-    <!-- DEVICE SEGMENT -->
-    <div v-if="devicePage" class="relative">
-      <!-- Device breadcrumb is ALWAYS dropdown on device page -->
-      <button
-        class="flex items-center gap-[6px] hover:text-[#111827] transition-colors"
-        @click="toggleDeviceMenu"
-      >
-        <span class="flex items-center justify-center w-[16px] h-[16px] rounded-[4px] border border-[#D1D5DB] bg-white text-[9px] text-[#4B5563]">
-          💻
-        </span>
-        <span class="font-medium leading-none truncate max-w-[140px] text-left">
-          {{ currentDeviceName }}
-        </span>
-        <span class="text-[11px] leading-none text-[#6B7280]">▼</span>
-      </button>
-
-      <!-- DEVICE DROPDOWN -->
-      <div
-        v-if="showDeviceMenu"
-        class="absolute z-20 mt-[4px] w-[220px] bg-white border border-[#E5E7EB] rounded-[6px] shadow-lg p-[4px]"
-      >
-        <div
-          v-for="dev in deviceList"
-          :key="dev.id"
-          class="px-[8px] py-[8px] text-[13px] text-[#1F2937] hover:bg-[#F3F4F6] rounded-[4px] cursor-pointer flex flex-col"
-          @click="selectDevice(dev)"
-        >
-          <span class="font-medium leading-none">
-            {{ dev.name }}
-          </span>
-          <span class="text-[11px] text-[#6B7280] leading-none">
-            {{ dev.id }}
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup lang="ts">
 const route = useRoute()
 const router = useRouter()
 
 const orgId = computed(() => route.params.orgId as string | undefined)
 const deviceId = computed(() => route.params.deviceId as string | undefined)
 
-const devicePage = computed(() => !!deviceId.value)
+// kita di konteks device?
+const inDeviceCtx = computed(() => !!deviceId.value || route.path.includes('/device/'))
 
 const { orgs } = useOrgList()
 
-const { devices: deviceList } = useDeviceList(orgId.value || '')
-
-const currentOrgName = computed(() => {
-  const found = orgs.value.find(o => o.id === orgId.value)
-  return found ? found.name : (orgId.value ?? 'Unknown Org')
+// reactive device list per org
+const devices = ref<{ id: string; name: string }[]>([])
+watchEffect(() => {
+  const { devices: list } = useDeviceList(orgId.value || '')
+  devices.value = list.value
 })
 
-const currentDeviceName = computed(() => {
-  const found = deviceList.value.find(d => d.id === deviceId.value)
-  return found ? found.name : (deviceId.value ?? 'Device Name')
+const pretty = (s?: string) =>
+  (s || '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+
+const orgLabel = computed(() =>
+  orgs.value.find(o => o.id === orgId.value)?.name || pretty(orgId.value) || 'Organizations'
+)
+const deviceLabel = computed(() => {
+  const id = deviceId.value
+  if (!id) return 'Device'
+  return devices.value.find(d => d.id === id)?.name || pretty(id)
 })
 
 // dropdown state
-const showOrgMenu = ref(false)
-const showDeviceMenu = ref(false)
+const open = ref<{ org: boolean; device: boolean }>({ org: false, device: false })
+const orgRef = ref<HTMLElement | null>(null)
+const devRef = ref<HTMLElement | null>(null)
 
-function toggleOrgMenu() {
-  if (devicePage.value) return
-  showOrgMenu.value = !showOrgMenu.value
-}
-function toggleDeviceMenu() {
-  showDeviceMenu.value = !showDeviceMenu.value
+function closeAll() { open.value.org = false; open.value.device = false }
+function toggle(which: 'org' | 'device') {
+  // org dropdown hanya boleh di org-level page
+  if (which === 'org' && inDeviceCtx.value) return
+  open.value[which] = !open.value[which]
+  if (which === 'org') open.value.device = false
+  if (which === 'device') open.value.org = false
 }
 
 function goOrgDevices() {
   if (!orgId.value) return
+  closeAll()
   router.push(`/dashboard/org/${orgId.value}/devices`)
 }
-
-function selectOrg(org: { id: string }) {
-  showOrgMenu.value = false
-  router.push(`/dashboard/org/${org.id}/devices`)
+function selectOrg(id: string) {
+  closeAll()
+  router.push(`/dashboard/org/${id}/devices`)
 }
-
-function selectDevice(dev: { id: string }) {
+function selectDevice(id: string) {
   if (!orgId.value) return
-  showDeviceMenu.value = false
-  router.push(`/dashboard/org/${orgId.value}/device/${dev.id}/events`)
+  closeAll()
+  router.push(`/dashboard/org/${orgId.value}/device/${id}/events`)
 }
+
+// close on outside / esc
+function onDocClick(e: MouseEvent) {
+  const t = e.target as Node
+  if (orgRef.value?.contains(t) || devRef.value?.contains(t)) return
+  closeAll()
+}
+function onEsc(e: KeyboardEvent) { if (e.key === 'Escape') closeAll() }
+
+onMounted(() => {
+  document.addEventListener('click', onDocClick)
+  document.addEventListener('keydown', onEsc)
+})
+onUnmounted(() => {
+  document.removeEventListener('click', onDocClick)
+  document.removeEventListener('keydown', onEsc)
+})
+
+// tutup tiap route berubah
+watch(() => route.fullPath, closeAll)
 </script>
+
+<template>
+  <nav class="min-w-0">
+    <ol class="flex items-center gap-2 min-w-0 text-[14px]">
+      <!-- ORG -->
+      <li v-if="orgId" class="flex items-center gap-2 min-w-0">
+        <div ref="orgRef" class="relative inline-flex items-center min-w-0">
+          <button
+            type="button"
+            class="inline-flex items-center gap-1 hover:underline min-w-0"
+            :title="orgLabel"
+            @click="inDeviceCtx ? goOrgDevices() : toggle('org')"
+          >
+            <span class="truncate max-w-[55vw] sm:max-w-[40vw] lg:max-w-[30vw]">
+              {{ orgLabel }}
+            </span>
+            <!-- caret hanya muncul di org-level page -->
+            <svg
+              v-if="!inDeviceCtx && orgs.length > 1"
+              viewBox="0 0 20 20" class="h-4 w-4 text-[#6B7280]" fill="none" aria-hidden="true">
+              <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- menu org: hanya ketika bukan device context -->
+          <div
+            v-if="open.org && !inDeviceCtx"
+            class="absolute left-0 top-full mt-1 z-[70] w-60 rounded-md border border-[#E5E7EB] bg-white shadow-lg"
+          >
+            <button
+              v-for="o in orgs"
+              :key="o.id"
+              class="w-full text-left px-3 py-2 hover:bg-gray-50 truncate"
+              @click="selectOrg(o.id)"
+              :title="o.name"
+            >
+              {{ o.name }}
+            </button>
+          </div>
+        </div>
+
+        <span class="text-[#9CA3AF] select-none">/</span>
+      </li>
+
+      <!-- DEVICE (muncul kalau di device context) -->
+      <li v-if="inDeviceCtx" class="flex items-center gap-2 min-w-0">
+        <div ref="devRef" class="relative inline-flex items-center min-w-0">
+          <button
+            type="button"
+            class="inline-flex items-center gap-1 hover:underline min-w-0"
+            :title="deviceLabel"
+            @click="toggle('device')"
+          >
+            <span class="truncate max-w-[55vw] sm:max-w-[40vw] lg:max-w-[30vw]">{{ deviceLabel }}</span>
+            <svg
+              v-if="devices.length > 1"
+              viewBox="0 0 20 20" class="h-4 w-4 text-[#6B7280]" fill="none" aria-hidden="true">
+              <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div
+            v-if="open.device"
+            class="absolute left-0 top-full mt-1 z-[70] w-64 rounded-md border border-[#E5E7EB] bg-white shadow-lg"
+          >
+            <button
+              v-for="d in devices"
+              :key="d.id"
+              class="w-full text-left px-3 py-2 hover:bg-gray-50 truncate"
+              @click="selectDevice(d.id)"
+              :title="d.name"
+            >
+              {{ d.name }}
+            </button>
+          </div>
+        </div>
+      </li>
+
+      <!-- Fallback root -->
+      <li v-if="!orgId">
+        <button class="hover:underline" @click="router.push('/dashboard')">Organizations</button>
+      </li>
+    </ol>
+  </nav>
+</template>

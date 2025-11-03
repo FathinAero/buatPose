@@ -15,13 +15,12 @@ function formatRupiah(value: number): string {
  * Dipakai di breadcrumb dropdown (bagian kiri).
  */
 export function useOrgList() {
-  // NOTE: dummy data sekarang
-  const orgs = ref<Org[]>([
-    { id: 'testorg', name: 'Maia Digital Network' },
-    { id: 'pose-labs', name: 'Pose Labs' },
-    { id: 'studio-alpha', name: 'Studio Alpha' }
+  const orgs = ref([
+    { id: 'org-2',       name: 'Maia Digital Network' },
+    { id: 'testorg',     name: 'POSE POST' },
+    { id: 'pose-labs',   name: 'Pose Labs' },
+    { id: 'studio-alpha',name: 'Studio Alpha' }
   ])
-
   return { orgs }
 }
 

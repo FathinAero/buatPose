@@ -1,176 +1,107 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: 'dashboard',
-})
+definePageMeta({ layout: 'dashboard' })
 
-const { mode } = useDashboardSidebar()
-mode.value = 'org'
+import { useRouter, useRoute } from 'vue-router'
+import { useOrgDevices } from '~/composables/useOrgData'
+import { useDashboardSidebar } from '~/composables/useDashboardSidebar'
 
 const route = useRoute()
 const router = useRouter()
 
-const orgId = route.params.orgId as string
+// pastiin sidebar di mode org (Devices/Billings)
+const { mode } = useDashboardSidebar()
+mode.value = 'org'
 
-// ambil data dummy pake composable (kalau kamu udah bikin useOrgDevices)
-const { tableRows, pagination } = useOrgDevices(orgId)
+const orgId = computed(() => route.params.orgId as string)
 
-function goRow(row: any) {
-  router.push(`/dashboard/org/${orgId}/device/${row.id}/events`)
+// dummy data dari composable (sudah ada di project)
+const { tableRows, pagination } = useOrgDevices(orgId.value)
+
+// search
+const q = ref('')
+const rows = computed(() => {
+  const kw = q.value.trim().toLowerCase()
+  if (!kw) return tableRows.value
+  return tableRows.value.filter(r =>
+    r.deviceName.toLowerCase().includes(kw) ||
+    r.email.toLowerCase().includes(kw)
+  )
+})
+
+function addDevice() {
+  // TODO: ganti ke modal / route create device
+  alert('TODO: Add Device')
+}
+
+function goDevice(id: string) {
+  router.push(`/dashboard/org/${orgId.value}/device/${id}/events`)
 }
 </script>
 
 <template>
-  <div class="flex flex-col w-full">
-    <!-- Page header (tanpa border-bottom sekarang) -->
-    <header class="flex items-start justify-between pb-4 flex-wrap gap-y-4">
-      <h1 class="text-[20px] font-semibold text-[#1F2937] leading-[1.2]">
-        Devices
-      </h1>
+  <div class="space-y-4">
+    <!-- header row: title + actions -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h1 class="text-[20px] font-semibold text-[#1F2937]">Devices</h1>
 
-      <div class="flex items-center gap-[8px] flex-shrink-0">
-        <!-- search -->
+      <div class="flex items-center gap-2">
         <div class="relative">
           <input
+            v-model="q"
             type="text"
             placeholder="Search device..."
-            class="border border-[#D1D5DB] rounded-[6px] h-[36px] pl-[28px] pr-[8px] text-[13px] leading-none text-[#1F2937] placeholder-[#9CA3AF] w-[200px] bg-white"
+            class="h-[36px] w-[220px] rounded-[6px] border border-[#E5E7EB] px-3 text-[14px] outline-none focus:ring-[1.5px] focus:ring-[#111827]"
           />
-          <span
-            class="absolute left-[8px] top-1/2 -translate-y-1/2 text-[12px] text-[#9CA3AF]"
-          >
-            🔍
-          </span>
+          <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]">🔎</span>
         </div>
 
-        <!-- Add Device -->
         <button
-          class="flex items-center gap-[6px] bg-[#111827] hover:bg-black text-white text-[13px] font-medium rounded-[6px] h-[36px] px-[10px] leading-none"
+          class="h-[36px] rounded-[6px] bg-[#111827] px-3 text-[13px] font-medium text-white hover:bg-black"
+          @click="addDevice"
         >
-          <span
-            class="text-[12px] bg-white text-[#111827] rounded-[4px] w-[18px] h-[18px] flex items-center justify-center font-medium"
-          >
-            ＋
-          </span>
-          <span>Add Device</span>
+          Add Device
         </button>
       </div>
-    </header>
-
-    <!-- Table block -->
-    <div class="pt-0">
-      <div
-        class="border border-[#E5E7EB] rounded-[6px] bg-white overflow-hidden text-[14px] text-[#1F2937]"
-      >
-        <table class="w-full border-collapse">
-          <thead
-            class="bg-[#F9FAFB] text-left text-[13px] text-[#4B5563] font-medium border-b border-[#E5E7EB]"
-          >
-            <tr>
-              <th class="py-[10px] px-[16px] font-medium">
-                <div class="flex items-center gap-[4px]">
-                  <span>Device Name</span>
-                  <span
-                    class="text-[10px] text-[#9CA3AF] leading-none"
-                  >▲▼</span>
-                </div>
-              </th>
-              <th class="py-[10px] px-[16px] font-medium">
-                <div class="flex items-center gap-[4px]">
-                  <span>Email</span>
-                  <span
-                    class="text-[10px] text-[#9CA3AF] leading-none"
-                  >▲▼</span>
-                </div>
-              </th>
-              <th class="py-[10px] px-[16px] font-medium">
-                <div class="flex items-center gap-[4px]">
-                  <span>Created At</span>
-                  <span
-                    class="text-[10px] text-[#9CA3AF] leading-none"
-                  >▲▼</span>
-                </div>
-              </th>
-              <th class="py-[10px] px-[16px] font-medium">
-                <div class="flex items-center gap-[4px]">
-                  <span>Revenue</span>
-                  <span
-                    class="text-[10px] text-[#9CA3AF] leading-none"
-                  >▲▼</span>
-                </div>
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr
-              v-for="row in tableRows"
-              :key="row.id"
-              class="border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#F9FAFB] cursor-pointer"
-              @click="goRow(row)"
-            >
-              <td class="py-[12px] px-[16px] text-[14px] text-[#1F2937]">
-                {{ row.deviceName }}
-              </td>
-              <td class="py-[12px] px-[16px] text-[14px] text-[#1F2937]">
-                {{ row.email }}
-              </td>
-              <td class="py-[12px] px-[16px] text-[14px] text-[#1F2937]">
-                {{ row.createdAt }}
-              </td>
-              <td class="py-[12px] px-[16px] text-[14px] text-[#1F2937]">
-                {{ row.revenue }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Pagination footer -->
-        <div
-          class="flex flex-col md:flex-row md:items-center justify-between gap-[12px] text-[12px] text-[#4B5563] px-[16px] py-[12px] bg-white"
-        >
-          <div class="leading-none">
-            Showing
-            <span
-              class="font-medium text-[#1F2937]"
-            >{{ pagination.from }}-{{ pagination.to }}</span>
-            of
-            <span
-              class="font-medium text-[#1F2937]"
-            >{{ pagination.total }}</span>
-            products
-          </div>
-
-          <div class="flex items-center gap-[8px] flex-wrap">
-            <div class="relative">
-              <select
-                class="appearance-none border border-[#D1D5DB] rounded-[6px] py-[6px] pl-[10px] pr-[28px] text-[13px] leading-none text-[#1F2937] bg-white"
-              >
-                <option>Show 20</option>
-                <option>Show 50</option>
-                <option>Show 100</option>
-              </select>
-              <span
-                class="pointer-events-none absolute right-[8px] top-1/2 -translate-y-1/2 text-[10px] text-[#6B7280]"
-              >
-                ▼
-              </span>
-            </div>
-
-            <div class="flex items-center gap-[4px]">
-              <button
-                class="border border-[#D1D5DB] rounded-[6px] w-[32px] h-[32px] flex items-center justify-center text-[13px] text-[#1F2937] hover:bg-[#F3F4F6]"
-              >
-                ‹
-              </button>
-              <button
-                class="border border-[#D1D5DB] rounded-[6px] w-[32px] h-[32px] flex items-center justify-center text-[13px] text-[#1F2937] hover:bg-[#F3F4F6]"
-              >
-                ›
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+
+    <!-- table card -->
+    <div class="overflow-hidden rounded-[8px] border border-[#E5E7EB] bg-white">
+      <table class="min-w-full table-fixed">
+        <thead class="bg-[#F9FAFB] text-left text-[13px] text-[#111827]">
+          <tr class="[&>th]:px-4 [&>th]:py-3">
+            <th class="w-[40%]">Device Name</th>
+            <th class="w-[28%]">Email</th>
+            <th class="w-[16%]">Created At</th>
+            <th class="w-[16%]">Revenue</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-[14px] text-[#1F2937]">
+          <tr
+            v-for="r in rows"
+            :key="r.id"
+            class="border-t border-[#F3F4F6] hover:bg-[#F9FAFB]"
+          >
+            <td class="px-4 py-3">
+              <button class="text-left hover:underline" @click="goDevice(r.id)">
+                {{ r.deviceName }}
+              </button>
+            </td>
+            <td class="px-4 py-3">{{ r.email }}</td>
+            <td class="px-4 py-3">{{ r.createdAt }}</td>
+            <td class="px-4 py-3">{{ r.revenue }}</td>
+          </tr>
+
+          <tr v-if="rows.length === 0" class="border-t border-[#F3F4F6]">
+            <td class="px-4 py-10 text-center text-[#6B7280]" colspan="4">No data</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- pagination text (dummy dari composable) -->
+    <p class="text-[12px] text-[#6B7280]">
+      Showing {{ pagination.from }}-{{ rows.length }} of {{ pagination.total }} products
+    </p>
   </div>
 </template>
