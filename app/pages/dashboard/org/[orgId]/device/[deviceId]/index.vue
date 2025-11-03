@@ -1,10 +1,14 @@
-<template></template>
-
 <script setup lang="ts">
-const route = useRoute()
+definePageMeta({ layout: 'dashboard' })
 
-onMounted(() => {
-  const { orgId, deviceId } = route.params as { orgId: string; deviceId: string }
-  navigateTo(`/dashboard/org/${orgId}/device/${deviceId}/events`, { replace: true })
-})
+const route = useRoute()
+const orgId = route.params.orgId as string
+const deviceId = route.params.deviceId as string
+
+const { mode } = useDashboardSidebar()
+mode.value = 'device'
+
+await navigateTo(`/dashboard/org/${orgId}/device/${deviceId}/events`, { replace: true })
 </script>
+
+<template></template>

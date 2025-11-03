@@ -1,16 +1,53 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
-import DashboardBreadcrumb from '~/components/dashboard/DashboardBreadcrumb.vue'
 
 const route = useRoute()
 const { p } = usePublicPath()
 
-const orgId = computed(() => (route.params.orgId as string) || 'org')
-const items = computed<NavigationMenuItem[]>(() => ([
-  { label: 'Devices',  icon: 'i-lucide-monitor', to: `/dashboard/org/${orgId.value}/devices`,  active: route.path.endsWith('/devices') },
-  { label: 'Billings', icon: 'i-lucide-receipt',  to: `/dashboard/org/${orgId.value}/billings`, active: route.path.endsWith('/billings') }
-]))
+const orgId = computed(() => route.params.orgId as string)
+const deviceId = computed(() => route.params.deviceId as string | undefined)
+const isDevice = computed(() => !!deviceId.value)
+
+// Sidebar items: switch by route
+const items = computed<NavigationMenuItem[]>(() => {
+  if (isDevice.value && deviceId.value) {
+    return [
+      {
+        label: 'Events',
+        icon: 'i-lucide-calendar',
+        to: `/dashboard/org/${orgId.value}/device/${deviceId.value}/events`,
+        active: route.path.endsWith('/events')
+      },
+      {
+        label: 'Device Account',
+        icon: 'i-lucide-user',
+        to: `/dashboard/org/${orgId.value}/device/${deviceId.value}/device-account`,
+        active: route.path.endsWith('/device-account')
+      }
+    ]
+  }
+  return [
+    {
+      label: 'Devices',
+      icon: 'i-lucide-monitor',
+      to: `/dashboard/org/${orgId.value}/devices`,
+      active: route.path.endsWith('/devices')
+    },
+    {
+      label: 'Billings',
+      icon: 'i-lucide-receipt',
+      to: `/dashboard/org/${orgId.value}/billings`,
+      active: route.path.endsWith('/billings')
+    }
+  ]
+})
+
+// (opsional) key buat paksa remount UNavigationMenu saat konteks berubah
+const menuKey = computed(() =>
+  isDevice.value ? `device-${deviceId.value}` : 'org'
+)
 </script>
+
 
 <template>
   <div class="min-h-screen bg-white text-[#111827]">
