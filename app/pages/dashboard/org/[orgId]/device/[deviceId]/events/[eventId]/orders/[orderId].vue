@@ -39,17 +39,17 @@ const fTime = (t: string) => t.replace(':', '.') + ' WIB'
     <h1 class="text-[20px] font-semibold text-[#1F2937]">Order Detail</h1>
 
     <!-- Summary -->
-    <div class="rounded-[10px] border border-[#E5E7EB] bg-white p-4 md:p-6">
+    <div class="w-full max-w-[560px] md:mx-0 mx-auto rounded-[10px] border border-[#E5E7EB] bg-white p-4 md:p-6">
       <div class="text-[14px] font-medium text-[#111827] mb-3">Summary</div>
 
       <div class="divide-y divide-[#E5E7EB]">
         <!-- row -->
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Order ID</div>
           <div class="text-[13px] text-[#111827]">{{ order.id }}</div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Status</div>
           <div>
             <span class="inline-flex items-center h-[22px] px-[10px] rounded-full bg-[#111827] text-white text-[11px] font-medium">
@@ -58,38 +58,38 @@ const fTime = (t: string) => t.replace(':', '.') + ' WIB'
           </div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Date</div>
           <div class="text-[13px] text-[#111827]">{{ fDate(order.date) }}</div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Time</div>
           <div class="text-[13px] text-[#111827]">{{ fTime(order.time) }}</div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Total Frame</div>
           <div class="text-[13px] text-[#111827]">{{ order.totalFrame }}</div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Subtotal</div>
           <div class="text-[13px] text-[#111827]">{{ fIDR.format(order.subtotal) }}</div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Discount</div>
           <div class="text-[13px] text-[#111827]">{{ fIDR.format(order.discount) }}</div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
+        <div class="flex items-center justify-between py-[16px]">
           <div class="text-[13px] text-[#6B7280]">Promo Code</div>
           <div class="text-[13px] text-[#111827]">{{ order.promo }}</div>
         </div>
 
-        <div class="flex items-center justify-between py-[10px]">
-          <div class="text-[13px] text-[#6B7280]">Total Amount</div>
+        <div class="flex items-center justify-between py-[16px]">
+          <div class="text-[13px] text-[#6B7280]">Total Amount</div>    
           <div class="text-[13px] text-[#111827]">{{ fIDR.format(order.total) }}</div>
         </div>
       </div>
