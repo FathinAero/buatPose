@@ -5,6 +5,7 @@ const route = useRoute()
 const orgId = computed(() => route.params.orgId as string)
 const deviceId = computed(() => route.params.deviceId as string | undefined)
 const eventId = computed(() => route.params.eventId as string | undefined)
+const sb = useDashboardSidebar()
 
 const level = computed<'org'|'device'|'event'>(() =>
   eventId.value ? 'event' : deviceId.value ? 'device' : 'org'
