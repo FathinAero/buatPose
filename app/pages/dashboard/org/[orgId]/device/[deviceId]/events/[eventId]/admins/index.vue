@@ -83,11 +83,80 @@ function openAdd() {
 }
 
 function saveAdd() {
-  // FE only untuk sekarang
+  if (Number(modalTab.value) === 0) {
+    if (!validateCreate()) return
+    
+  } else {
+    if (!validateAssign()) return
+    
+  }
   showAdd.value = false
 }
 
-// (opsional) Esc to close + lock scroll saat modal terbuka
+// ==== Validation state ====
+const createError = ref('')
+const assignError = ref('')
+
+const allEmails = computed(() =>
+  admins.value.map(a => a.email.toLowerCase())
+)
+
+function isEmail(str: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str)
+}
+
+watch(() => Number(modalTab.value), () => { createError.value = ''; assignError.value = '' })
+watch(() => formCreate.email, () => (createError.value = ''))
+watch(() => formAssign.email, () => (assignError.value = ''))
+
+function validateCreate() {
+  const email = formCreate.email.trim().toLowerCase()
+  if (!isEmail(email)) { createError.value = 'Email format is invalid'; return false }
+  if (allEmails.value.includes(email)) { createError.value = 'Email already exist'; return false }
+  createError.value = ''
+  return true
+}
+
+function validateAssign() {
+  const email = formAssign.email.trim().toLowerCase()
+  if (!isEmail(email)) { assignError.value = 'Email format is invalid'; return false }
+  if (!allEmails.value.includes(email)) { assignError.value = 'Email is not exist'; return false }
+  assignError.value = ''
+  return true
+}
+
+// === UPDATE ADMIN (modal) ===
+type Status = 'Active' | 'Inactive'
+
+const statusOptions: Status[] = ['Active', 'Inactive']
+
+const showEdit = ref(false)
+const editForm = reactive({
+  id: null as number | null,
+  name: '',
+  email: '',
+  status: 'Active' as Status,
+  role: 'Event Admin' as Role,
+  newPassword: ''
+})
+
+function openEdit(a: any) {
+  editForm.id = a.id ?? null
+  editForm.name = a.name ?? ''
+  editForm.email = a.email ?? ''
+  editForm.role = (a.role ?? 'Event Admin') as Role
+
+  editForm.status = (a.status ?? (Number(adminTab) === 0 ? 'Active' : 'Inactive')) as Status
+  editForm.newPassword = ''
+  showEdit.value = true
+}
+
+function saveEdit() {
+
+  showEdit.value = false
+}
+
+// Esc to close + lock scroll saat modal terbuka
 let onKey: ((e: KeyboardEvent) => void) | null = null
 watch(showAdd, (v) => {
   document.documentElement.classList.toggle('overflow-hidden', v)
@@ -144,7 +213,7 @@ onBeforeUnmount(() => {
               <th class="w-[28%]">email</th>
               <th class="w-[18%]">Role</th>
               <th class="w-[18%]">Created at</th>
-              <th class="w-[8%]">Action</th>
+              <th class="w-[88px] text-center">Action</th>
             </tr>
           </thead>
           <tbody class="text-[14px] text-[#1F2937]">
@@ -153,9 +222,15 @@ onBeforeUnmount(() => {
               <td class="py-[12px] px-[16px]">{{ a.email }}</td>
               <td class="py-[12px] px-[16px]">{{ a.role }}</td>
               <td class="py-[12px] px-[16px]">{{ fDate(a.createdAt) }}</td>
-              <td class="py-[12px] px-[16px]">
-                <button type="button" class="w-[28px] h-[28px] grid place-items-center rounded hover:bg-[#F3F4F6]">
-                  <i class="i-lucide-more-horizontal text-[18px] text-[#6B7280]" />
+              <td class="w-[88px] text-center">
+                <button
+                  type="button"
+                  @click="openEdit(a)"
+                  class="inline-grid h-[28px] w-[28px] place-items-center rounded-[8px]
+                        text-[#6B7280] hover:bg-[#F3F4F6]"
+                  aria-label="Update admin"
+                >
+                  <span class="text-[18px] leading-none">•••</span>
                 </button>
               </td>
             </tr>
@@ -166,7 +241,7 @@ onBeforeUnmount(() => {
         </table>
       </div>
 
-      <!-- Footer controls (match Orders, no "…") -->
+      <!-- Footer controls  -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-[12px] text-[12px] text-[#4B5563] px-[16px] py-[12px] bg-white">
         <div class="leading-none">
           Showing
@@ -177,7 +252,6 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="flex items-center gap-[8px] flex-wrap">
-          <!-- Show N (caret) -->
           <div class="relative">
             <select
               v-model.number="pageSize"
@@ -227,7 +301,7 @@ onBeforeUnmount(() => {
               <!-- header -->
               <div class="mb-3 flex items-start justify-between">
                 <div>
-                  <div class="text-[16px] font-semibold">Add new admin</div>
+                  <div class="text-[16px] font-semibold">Add new admin</div>  
                   <div class="text-[12px] text-[#6B7280]">
                     Make changes to your profile here. Click save when you’re done.
                   </div>
@@ -254,6 +328,10 @@ onBeforeUnmount(() => {
 
               <!-- Form: Create New -->
               <div v-if="Number(modalTab) === 0" class="mt-3 space-y-3">
+                <div v-if="createError"
+                    class="mb-3 rounded-[8px] border border-[#FECACA] bg-[#FEE2E2] px-3 py-2 text-[13px] text-[#DC2626]">
+                  {{ createError }}
+                </div>
                 <div class="space-y-1">
                   <label class="text-[12px] text-[#6B7280]">Name</label>
                   <input v-model="formCreate.name" type="text"
@@ -280,6 +358,10 @@ onBeforeUnmount(() => {
 
               <!-- Form: Assign Existing Account -->
               <div v-else class="mt-3 space-y-3">
+              <div v-if="assignError"
+                  class="mb-3 rounded-[8px] border border-[#FECACA] bg-[#FEE2E2] px-3 py-2 text-[13px] text-[#DC2626]">
+                {{ assignError }}
+              </div>
                 <div class="space-y-1">
                   <label class="text-[12px] text-[#6B7280]">Email</label>
                   <input v-model="formAssign.email" type="email" placeholder="Email"
@@ -297,6 +379,81 @@ onBeforeUnmount(() => {
               <!-- footer -->
               <div class="mt-4 flex justify-end">
                 <button class="h-[36px] px-[12px] rounded-[8px] bg-black text-white text-[13px]" @click="saveAdd">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </Teleport>
+
+    <Teleport to="body">
+      <transition enter-active-class="duration-150 ease-out"
+                  enter-from-class="opacity-0"
+                  enter-to-class="opacity-100"
+                  leave-active-class="duration-150 ease-in"
+                  leave-from-class="opacity-100"
+                  leave-to-class="opacity-0">
+        <div v-if="showEdit"
+            class="fixed inset-0 z-[999] bg-black/40"
+            @click.self="showEdit = false">
+          <div class="absolute left-1/2 top-1/2 w-[420px] max-w-[90vw] -translate-x-1/2 -translate-y-1/2">
+            <div class="rounded-[12px] bg-white p-5 shadow-xl">
+              <!-- header -->
+              <div class="mb-3 flex items-start justify-between">
+                <div>
+                  <div class="text-[16px] font-semibold">Update admin</div>
+                  <div class="text-[12px] text-[#6B7280]">
+                    Make changes to your profile here. Click save when you’re done.
+                  </div>
+                </div>
+                <button class="p-1 rounded hover:bg-[#F3F4F6]" @click="showEdit=false" aria-label="Close">
+                  <i class="i-lucide-x text-[18px]"></i>
+                </button>
+              </div>
+
+              <!-- form -->
+              <div class="space-y-3">
+                <div class="space-y-1">
+                  <label class="text-[12px] text-[#6B7280]">Name</label>
+                  <input v-model="editForm.name" type="text"
+                        class="w-full h-[38px] rounded-[8px] border border-[#D1D5DB] px-[12px] text-[14px]" />
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-[12px] text-[#6B7280]">Email</label>
+                  <input v-model="editForm.email" type="email"
+                        class="w-full h-[38px] rounded-[8px] border border-[#D1D5DB] px-[12px] text-[14px]" />
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-[12px] text-[#6B7280]">Status</label>
+                  <select v-model="editForm.status"
+                          class="w-full h-[38px] rounded-[8px] border border-[#D1D5DB] px-[10px] text-[14px]">
+                    <option v-for="s in statusOptions" :key="s" :value="s">{{ s }}</option>
+                  </select>
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-[12px] text-[#6B7280]">Role</label>
+                  <select v-model="editForm.role"
+                          class="w-full h-[38px] rounded-[8px] border border-[#D1D5DB] px-[10px] text-[14px]">
+                    <option v-for="r in roleOptions" :key="r" :value="r">{{ r }}</option>
+                  </select>
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-[12px] text-[#6B7280]">New Password</label>
+                  <input v-model="editForm.newPassword" type="password"
+                        class="w-full h-[38px] rounded-[8px] border border-[#D1D5DB] px-[12px] text-[14px]" />
+                </div>
+              </div>
+
+              <!-- footer -->
+              <div class="mt-4 flex justify-end">
+                <button class="h-[36px] px-[12px] rounded-[8px] bg-black text-white text-[13px]"
+                        @click="saveEdit">
                   Save changes
                 </button>
               </div>
