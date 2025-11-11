@@ -358,7 +358,7 @@ onBeforeUnmount(() => {
 
               <!-- Form: Assign Existing Account -->
               <div v-else class="mt-3 space-y-3">
-              <div v-if="assignError"
+                              <div v-if="assignError"
                   class="mb-3 rounded-[8px] border border-[#FECACA] bg-[#FEE2E2] px-3 py-2 text-[13px] text-[#DC2626]">
                 {{ assignError }}
               </div>

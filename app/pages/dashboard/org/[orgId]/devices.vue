@@ -8,13 +8,19 @@ import { useDashboardSidebar } from '~/composables/useDashboardSidebar'
 const route = useRoute()
 const router = useRouter()
 
-// pastiin sidebar di mode org (Devices/Billings)
+
+const mobileOpen = ref(false)
+const orgId = computed(() => String(route.params.orgId ?? ''))
+const menuItems = computed(() => [
+  { label: 'Devices',  icon: 'i-lucide-monitor', to: `/dashboard/org/${orgId.value}/devices` },
+  { label: 'Billings', icon: 'i-lucide-banknote', to: `/dashboard/org/${orgId.value}/billings` },
+])
+
 const { mode } = useDashboardSidebar()
 mode.value = 'org'
 
-const orgId = computed(() => route.params.orgId as string)
 
-// dummy data dari composable (sudah ada di project)
+// dummy data dari composable
 const { tableRows, pagination } = useOrgDevices(orgId.value)
 
 // search
@@ -29,7 +35,7 @@ const rows = computed(() => {
 })
 
 function addDevice() {
-  // TODO: ganti ke modal / route create device
+
   alert('TODO: Add Device')
 }
 
@@ -40,6 +46,7 @@ function goDevice(id: string) {
 
 <template>
   <div class="space-y-4">
+    
     <!-- header row: title + actions -->
     <div class="flex flex-wrap items-center justify-between gap-3">
       <h1 class="text-[20px] font-semibold text-[#1F2937]">Devices</h1>
@@ -99,7 +106,7 @@ function goDevice(id: string) {
       </table>
     </div>
 
-    <!-- pagination text (dummy dari composable) -->
+    <!-- pagination text -->
     <p class="text-[12px] text-[#6B7280]">
       Showing {{ pagination.from }}-{{ rows.length }} of {{ pagination.total }} products
     </p>
