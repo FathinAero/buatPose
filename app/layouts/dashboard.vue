@@ -1,18 +1,38 @@
 <script setup lang="ts">
-
 const { p } = usePublicPath()
 const route = useRoute()
 const orgId = computed(() => route.params.orgId as string)
 const deviceId = computed(() => route.params.deviceId as string | undefined)
 const eventId = computed(() => route.params.eventId as string | undefined)
+const mobileOpen = ref(false)
+const toggleMobile = () => { mobileOpen.value = !mobileOpen.value }
 
 const sb = useDashboardSidebar()
 watch(() => route.fullPath, () => sb.close())
 
-
 const level = computed<'org'|'device'|'event'>(() =>
   eventId.value ? 'event' : deviceId.value ? 'device' : 'org'
 )
+
+const router = useRouter()
+
+const orgBase = computed(() => `/dashboard/org/${route.params.orgId}`)
+
+const mobileNav = computed(() =>
+  items.value
+    .filter(i => i?.to)
+    .map(i => ({ label: i.label, to: i.to as string, icon: (i as any).icon }))
+)
+
+watch(() => route.fullPath, () => {
+  mobileOpen.value = false
+  sb.close()
+})
+
+function go(to: string) {
+  mobileOpen.value = false
+  router.push(to)
+}
 
 const items = computed(() => {
   if (level.value === 'event' && deviceId.value && eventId.value) {
@@ -65,7 +85,6 @@ const items = computed(() => {
   ]
 })
 
-// optional: paksa remount saat level berubah
 const menuKey = computed(() =>
   level.value === 'event'
     ? `event-${eventId.value}`
@@ -74,6 +93,7 @@ const menuKey = computed(() =>
     : 'org'
 )
 </script>
+
 
 
 <template>
@@ -97,14 +117,24 @@ const menuKey = computed(() =>
 
       <!-- Mobile (2 baris) -->
       <div class="lg:hidden">
+        <!-- baris 1: logo kiri, hamburger kanan -->
         <div class="h-12 flex items-center justify-between px-4">
           <NuxtLink to="/dashboard" class="shrink-0">
             <img :src="p('/img/logo-pose.svg')" alt="Pose" class="h-6 w-auto" />
           </NuxtLink>
-          <NuxtLink to="/my-account" class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[#E5E7EB]" aria-label="My Account">
-            <img :src="p('/img/dashboard-symbol-account.svg')" alt="Account" class="h-5 w-5" />
-          </NuxtLink>
+
+          <!-- hamburger -->
+          <button
+            type="button"
+            @click="mobileOpen = true"
+            aria-label="Open menu"
+            class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[#E5E7EB] hover:bg-[#F9FAFB] active:bg-[#F3F4F6]"
+          >
+            <i class="i-lucide-menu h-5 w-5"></i>
+          </button>
         </div>
+
+        <!-- baris 2: breadcrumbs -->
         <div class="h-12 flex items-center px-4 border-t border-[#F3F4F6]">
           <span class="text-[#9CA3AF] select-none">/</span>
           <DashboardBreadcrumb class="ms-2 inline-flex items-center min-w-0" />
@@ -134,5 +164,65 @@ const menuKey = computed(() =>
       </UDashboardGroup>
     </main>
 
+    <!-- MOBILE TOP-SHEET -->
+    <div v-if="mobileOpen" class="lg:hidden fixed inset-0 z-[60]" @keydown.esc="mobileOpen = false">
+      <!-- backdrop -->
+      <div class="absolute inset-0 bg-black/40 transition-opacity duration-200" @click="mobileOpen = false"></div>
+
+      <!-- panel drop-down -->
+      <transition name="sheet">
+        <div class="absolute top-0 left-0 right-0">
+          <aside
+            class="mx-2 mt-2 rounded-xl bg-white shadow-xl ring-1 ring-black/5 overflow-hidden"
+            aria-label="Mobile menu"
+          >
+            <!-- header -->
+            <div class="h-12 px-4 flex items-center justify-between border-b">
+              <div class="flex items-center gap-2">
+                <img :src="p('/img/logo-pose.svg')" alt="Pose" class="h-5 w-auto" />
+                <span class="text-sm font-medium">Pose</span>
+              </div>
+              <button
+                type="button"
+                class="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-[#F3F4F6]"
+                aria-label="Close menu"
+                @click="mobileOpen = false"
+              >
+                <i class="i-lucide-x h-5 w-5"></i>
+              </button>
+            </div>
+
+            <!-- nav -->
+            <nav class="p-2">
+              <ul class="space-y-1">
+                <li v-for="link in mobileNav" :key="link.to">
+                  <NuxtLink
+                    :to="link.to"
+                    @click="mobileOpen = false"
+                    class="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium"
+                    :class="route.path.startsWith(link.to)
+                      ? 'bg-[#111827] text-white'
+                      : 'text-[#111827] hover:bg-[#F3F4F6]'"
+                  >
+                    <i :class="link.icon" class="h-4 w-4"></i>
+                    <span>{{ link.label }}</span>
+                  </NuxtLink>
+                </li>
+              </ul>
+            </nav>
+          </aside>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.sheet-enter-from,
+.sheet-leave-to { transform: translateY(-100%); opacity: 0; }
+.sheet-enter-active,
+.sheet-leave-active { transition: transform .2s ease, opacity .2s ease; }
+.sheet-enter-to,
+.sheet-leave-from { transform: translateY(0); opacity: 1; }
+</style>
+

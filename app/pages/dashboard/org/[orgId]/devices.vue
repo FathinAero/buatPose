@@ -8,6 +8,7 @@ import { useDashboardSidebar } from '~/composables/useDashboardSidebar'
 const route = useRoute()
 const router = useRouter()
 
+
 const mobileOpen = ref(false)
 const orgId = computed(() => String(route.params.orgId ?? ''))
 const menuItems = computed(() => [
